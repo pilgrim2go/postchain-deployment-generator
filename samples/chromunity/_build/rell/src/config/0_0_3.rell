@@ -1,0 +1,75 @@
+import ft3_acc: lib.ft3.account;
+import ft3_core: lib.ft3.core;
+import store;
+
+operation init() {
+	seed_store(1);
+}
+
+function seed_store(block: integer) {
+	require(op_context.block_height >= block, "Block is not high enough yet for the update");
+  	require(ft3_core.my_blockchain_info.last_update < block, "Recent update was done with a higher update block");
+  	
+  	val name_coloring = create store.category("Name Coloring");
+  	create store.item(
+  		id = 'NameColoring:Blue', 
+  		name = "Blue", 
+  		description = "Blue is the only color which maintains its own character in all its tones.", 
+  		name_coloring, 
+  		9
+  	);
+  	create store.item(
+  		id = 'NameColoring:Dark', 
+  		name = "Dark", 
+  		description = "Once you start down the dark path, forever will it dominate your destiny.", 
+  		name_coloring, 
+  		2
+  	);
+  	create store.item(
+  		id = 'NameColoring:Light', 
+  		name = "Light", 
+  		description = "In the end, cowards are those who follow the dark side.", 
+  		name_coloring, 
+  		3
+  	);
+  	create store.item(
+  		id = 'NameColoring:PinkBordered', 
+  		name = "Bordered Pink", 
+  		description = "On Wednesdays, we wear pink.", 
+  		store.category@{ .name == "Name Coloring" }, 
+  		5
+  	);
+}
+
+operation update_block_79000(){
+  val update_at_block = 79000;
+  require(op_context.block_height>=update_at_block);
+  require(ft3_core.my_blockchain_info.last_update < update_at_block);
+
+  update_new_users_limit();
+  update_previous_users_limit();
+
+  ft3_core.my_blockchain_info.last_update = update_at_block;
+}
+
+function update_new_users_limit() {
+  val new_args = ft3_core.scan_args_my_blockchain_info();
+  ft3_core.my_blockchain_info.name = new_args.my_blockchain_name;
+  ft3_core.my_blockchain_info.name = new_args.my_blockchain_name;
+  ft3_core.my_blockchain_info.website = new_args.my_blockchain_website;
+  ft3_core.my_blockchain_info.description = new_args.my_blockchain_description;
+  ft3_core.my_blockchain_info.rate_limit_active = new_args.rate_limit_active;
+  ft3_core.my_blockchain_info.rate_limit_max_points = new_args.rate_limit_max_points;
+  ft3_core.my_blockchain_info.rate_limit_recovery_time = new_args.rate_limit_recovery_time;
+  ft3_core.my_blockchain_info.rate_limit_points_at_account_creation = new_args.rate_limit_points_at_account_creation;
+}
+
+function update_previous_users_limit() {
+  update ft3_acc.rl_state@*{
+    .recovery_time > ft3_core.my_blockchain_info.rate_limit_recovery_time,
+    .max_points < ft3_core.my_blockchain_info.rate_limit_max_points
+  }(
+    .recovery_time = ft3_core.my_blockchain_info.rate_limit_recovery_time,
+    .max_points = ft3_core.my_blockchain_info.rate_limit_max_points
+  );
+}

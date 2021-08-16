@@ -1,0 +1,9 @@
+import user;
+
+entity user_settings {
+    key user.user;
+    mutable avatar: text;
+    mutable description: text;
+    mutable socials: json = json("{}");
+    mutable name_badge_id: text = "";
+}

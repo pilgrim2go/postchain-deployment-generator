@@ -1,0 +1,9 @@
+query get_unhandled_representative_reports(timestamp) {
+    return representative_report@*{
+    	.timestamp > timestamp
+    } ( 
+    	.id, 
+    	@sort_desc .timestamp, 
+    	.text
+    ) limit 25;
+}

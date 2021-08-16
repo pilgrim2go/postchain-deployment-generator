@@ -1,0 +1,27 @@
+import topic;
+import user;
+
+entity poll {
+	key topic.topic;
+	text;
+}
+
+entity poll_option {
+	key poll, text;
+	mutable votes: integer;
+}
+
+entity poll_vote {
+	key poll, user.user;
+	poll_option;
+}
+
+struct poll_record {
+	question: text;
+	options: list<option_record>;
+}
+
+struct option_record {
+	option: text;
+	votes: integer;
+}

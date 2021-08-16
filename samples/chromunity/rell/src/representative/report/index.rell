@@ -1,0 +1,7 @@
+import user;
+
+entity representative_report {
+    key id: text;
+    index timestamp;
+    text;
+}

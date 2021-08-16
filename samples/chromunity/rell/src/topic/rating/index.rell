@@ -1,0 +1,17 @@
+import user;
+import topic;
+
+entity topic_star_rating {
+    key topic.topic, user.user;
+}
+
+// Safe to delete, but kept since entity already exists on TestNet
+entity tmp_topic_rating {
+    key topic.topic;
+    mutable stars: integer;
+    index stars;
+}
+
+entity reply_star_rating {
+    key topic.topic_reply, user.user;
+}

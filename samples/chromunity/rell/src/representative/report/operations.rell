@@ -1,0 +1,9 @@
+import election;
+import user;
+import representative;
+import util;
+
+operation create_representative_report(username: text, descriptor_id: byte_array, id: text, text) {
+    val user = user.get_and_charge_verified_user(username, descriptor_id);
+    create representative_report(id = id, op_context.last_block_time, text = text);
+}

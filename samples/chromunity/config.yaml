@@ -1,0 +1,7 @@
+POSTCHAIN_CLI: postchain\postchain.cmd
+POSTCHAIN_KEYGEN_CMD: keygen
+CONFIG_TEMPLATE_DIR: config-template
+DOCKER_IMAGE: chromia/postchain:chromunity
+
+postchain:
+  module_name: ""

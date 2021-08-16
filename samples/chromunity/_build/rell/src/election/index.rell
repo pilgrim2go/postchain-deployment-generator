@@ -1,0 +1,96 @@
+import user;
+import topic;
+
+entity representative_election {
+    key id: integer;
+    index timestamp;
+    mutable completed: boolean;
+    index completed;
+}
+
+entity election_block_details {
+	key started_height: integer;
+	mutable finished_height: integer = -1;
+	index representative_election;
+}
+
+entity representative_election_candidate {
+  key representative_election, user.user;
+}
+
+entity representative_election_vote {
+    key user.user, representative_election_candidate;
+}
+
+entity temp_votes_counter {
+	key representative_election_candidate;
+	mutable votes: integer;
+}
+
+function is_eligible_to_vote(user.user): boolean {
+	val prev_election_id = get_latest_completed_election_id();
+	
+	val current_election_id = get_current_election_id();
+	
+	if (current_election_id == null) {
+		return false;
+	} else if (prev_election_id == null) {
+		return true;
+	}
+	
+	val current_election_start = (election_block_details, block)@{ 
+		election_block_details.representative_election.id == current_election_id,
+		election_block_details.started_height == block.block_height
+	} ( 
+		block.timestamp
+	);
+	
+	if (user.registered > current_election_start) {
+		log("Not elgible for voting: User registered after election start");
+		return false; 
+	}
+	
+	val previous_election_completed = (representative_election, election_block_details, block)@?{
+		representative_election == election_block_details.representative_election,
+		representative_election.completed == true,
+		block.block_height == election_block_details.finished_height
+	} ( 
+		block.timestamp,
+		@omit @sort_desc representative_election.timestamp
+	) limit 1;
+	
+	if (previous_election_completed != null) {
+		log("A previous election was held, so verifying correct number of posts");
+		val number_of_topics = topic.topic@*{ 
+			.author == user,
+			.last_modified > previous_election_completed,
+			.last_modified < current_election_start
+		}( .id ).size();
+		
+		val number_of_replies = topic.topic_reply@*{
+			.author == user,
+			.timestamp > previous_election_completed,
+			.timestamp < current_election_start
+		}( .id ).size();
+		
+		return number_of_topics + number_of_replies >= 5;
+	}
+	
+	return true;
+}
+
+function governing_period_in_blocks(): integer {
+	return 75000;
+}
+
+function election_duration_in_blocks(): integer {
+	return 25000;
+}
+
+function get_current_election_id(): integer? {
+	return representative_election@?{ .completed == false } ( @omit @sort_desc .timestamp, .id ) limit 1;
+}
+
+function get_latest_completed_election_id(): integer? {
+	return representative_election@?{ .completed == true } ( .id, @omit @sort_desc .timestamp ) limit 1;
+}
