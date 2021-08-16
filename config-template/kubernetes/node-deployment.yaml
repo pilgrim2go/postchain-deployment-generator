@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    apps: node{{node.id}}
+  name: node{{node.id}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apps: node{{node.id}}
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+      labels:
+        io.kompose.network/postchain-network: "true"
+        apps: node{{node.id}}
+    spec:
+      containers:
+      - env:
+        - name: PGHOST
+          valueFrom:
+            configMapKeyRef:
+              key: PGHOST
+              name: postchain-env
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_DB
+              name: postchain-env
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_PASSWORD
+              name: postchain-env
+        image: {{ docker_image }}-{{node.id}}
+        imagePullPolicy: ""
+        name: node{{node.id}}
+        ports:
+        - containerPort: 7740
+        resources: {}
+        tty: true
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    apps: node{{node.id}}
+  name: node{{node.id}}
+spec:
+  ports:
+  - name: "9870"
+    port: 9870
+    targetPort: 9870
+  selector:
+    apps: node{{node.id}}
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    apps: node{{node.id}}
+  name: ext-node{{node.id}}
+spec:
+  type: NodePort
+  ports:
+  - name: "7740"
+    port: 7740
+    targetPort: 7740
+  selector:
+    apps: node{{node.id}}
