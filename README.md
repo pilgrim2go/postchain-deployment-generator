@@ -1,4 +1,4 @@
-# postchain-deplyment-generator
+# postchain-deployment-generator
 
 
 
