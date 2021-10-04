@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    apps: node4
+  name: node4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apps: node4
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+      labels:
+        io.kompose.network/postchain-network: "true"
+        apps: node4
+    spec:
+      containers:
+      - env:
+        - name: PGHOST
+          valueFrom:
+            configMapKeyRef:
+              key: PGHOST
+              name: postchain-env
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_DB
+              name: postchain-env
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_PASSWORD
+              name: postchain-env
+        image: chromia/postchain:d1test-generator-4
+        imagePullPolicy: ""
+        name: node4
+        ports:
+        - containerPort: 9870
+          name: inter-port
+        - containerPort: 7740
+          name: api-port      
+        resources: {}
+        tty: true
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    apps: node4
+  name: node4
+spec:
+  ports:
+  ports:
+  - name: "7740"
+    port: 7740
+    targetPort: 7740
+  - name: "9870"
+    port: 9870
+    targetPort: 9870    
+  selector:
+    apps: node4
+status:
+  loadBalancer: {}

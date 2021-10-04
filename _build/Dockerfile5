@@ -1,0 +1,12 @@
+FROM openjdk:11.0.5-jre
+
+COPY ./lib /opt/postchain-node/lib
+COPY ./postchain.sh /opt/postchain-node/postchain.sh
+RUN chmod +x /opt/postchain-node/
+
+# COPY ./rell/src /usr/src/rell/src
+COPY config5/ /usr/src/rell/config/
+COPY run5.sh /run.sh
+RUN chmod +x /run.sh
+WORKDIR /usr/src/rell
+CMD /run.sh

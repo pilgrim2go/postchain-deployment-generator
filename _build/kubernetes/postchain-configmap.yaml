@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  PGHOST: postgres-db
+  POSTGRES_DB: postchain
+  POSTGRES_PASSWORD: postchain
+  POSTGRES_USER: postchain
+kind: ConfigMap
+metadata:
+  name: postchain-env

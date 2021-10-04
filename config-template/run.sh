@@ -14,5 +14,9 @@ sed -i "s/__postchain_db_password__/$POSTGRES_PASSWORD/g" /usr/src/rell/config/c
 
 # cat /usr/src/rell/config/node-config.properties
 
-exec /opt/postchain-node/multirun.sh --source-dir=/usr/src/rell/src /usr/src/rell/config/run.xml 
+/opt/postchain-node/postchain.sh wipe-db -nc /usr/src/rell/config/node-config.properties
+/opt/postchain-node/postchain.sh add-blockchain -bc  /usr/src/rell/config/0.xml -cid 0 -nc /usr/src/rell/config/node-config.properties
+/opt/postchain-node/postchain.sh peerinfo-add -h node0 -nc /usr/src/rell/config/node-config.properties -p 9870 -pk {{ node0.pubkey}}
+/opt/postchain-node/postchain.sh peerinfo-add -h node{{ node.id }} -nc /usr/src/rell/config/node-config.properties -p 9870 -pk {{ node.pubkey}}
 
+exec /opt/postchain-node/postchain.sh run-node -cid 0 -nc /usr/src/rell/config/node-config.properties

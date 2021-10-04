@@ -41,7 +41,10 @@ spec:
         imagePullPolicy: ""
         name: node{{node.id}}
         ports:
+        - containerPort: 9870
+          name: inter-port
         - containerPort: 7740
+          name: api-port      
         resources: {}
         tty: true
       restartPolicy: Always
@@ -59,26 +62,14 @@ metadata:
   name: node{{node.id}}
 spec:
   ports:
-  - name: "9870"
-    port: 9870
-    targetPort: 9870
-  selector:
-    apps: node{{node.id}}
-status:
-  loadBalancer: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-  labels:
-    apps: node{{node.id}}
-  name: ext-node{{node.id}}
-spec:
-  type: NodePort
   ports:
   - name: "7740"
     port: 7740
     targetPort: 7740
+  - name: "9870"
+    port: 9870
+    targetPort: 9870    
   selector:
     apps: node{{node.id}}
+status:
+  loadBalancer: {}
