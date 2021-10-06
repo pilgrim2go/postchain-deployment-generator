@@ -61,11 +61,12 @@ metadata:
     apps: node3
   name: node3
 spec:
-  ports:
+  type: NodePort
   ports:
   - name: "7740"
     port: 7740
     targetPort: 7740
+    nodePort: 31743
   - name: "9870"
     port: 9870
     targetPort: 9870    
