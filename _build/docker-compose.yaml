@@ -6,7 +6,7 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile1
-    image: chromia/postchain:d1test-generator-1
+    image: public.ecr.aws/j8l1p8n9/chromia/d1test:node-1
     ports:
       - 7741:7740
     tty: true
@@ -22,7 +22,7 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile2
-    image: chromia/postchain:d1test-generator-2
+    image: public.ecr.aws/j8l1p8n9/chromia/d1test:node-2
     ports:
       - 7742:7740
     tty: true
@@ -38,105 +38,9 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile3
-    image: chromia/postchain:d1test-generator-3
+    image: public.ecr.aws/j8l1p8n9/chromia/d1test:node-3
     ports:
       - 7743:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node4:
-    build: 
-      context: ./
-      dockerfile: Dockerfile4
-    image: chromia/postchain:d1test-generator-4
-    ports:
-      - 7744:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node5:
-    build: 
-      context: ./
-      dockerfile: Dockerfile5
-    image: chromia/postchain:d1test-generator-5
-    ports:
-      - 7745:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node6:
-    build: 
-      context: ./
-      dockerfile: Dockerfile6
-    image: chromia/postchain:d1test-generator-6
-    ports:
-      - 7746:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node7:
-    build: 
-      context: ./
-      dockerfile: Dockerfile7
-    image: chromia/postchain:d1test-generator-7
-    ports:
-      - 7747:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node8:
-    build: 
-      context: ./
-      dockerfile: Dockerfile8
-    image: chromia/postchain:d1test-generator-8
-    ports:
-      - 7748:7740
-    tty: true
-    # depends_on:
-    #   - postgres_db
-    restart: always
-    env_file:
-      - .env
-    environment:
-      PGHOST: ${PGHOST}
-  
-  node9:
-    build: 
-      context: ./
-      dockerfile: Dockerfile9
-    image: chromia/postchain:d1test-generator-9
-    ports:
-      - 7749:7740
     tty: true
     # depends_on:
     #   - postgres_db

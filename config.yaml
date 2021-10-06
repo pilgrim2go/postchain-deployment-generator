@@ -1,7 +1,7 @@
 POSTCHAIN_CLI: postchain\postchain.cmd
 POSTCHAIN_KEYGEN_CMD: keygen
 CONFIG_TEMPLATE_DIR: config-template
-DOCKER_IMAGE: chromia/postchain:d1test-generator
+DOCKER_IMAGE: public.ecr.aws/j8l1p8n9/chromia/d1test:node
 
 postchain:
   module_name: ""

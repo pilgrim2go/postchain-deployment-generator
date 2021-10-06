@@ -1507,7 +1507,7 @@ function proposal_rejected (proposal) {
     </entry>
     <entry key="signers">
         <array>
-            <bytea>02A35356A347B693C3E973EC857C749C0001802DC9B85FF09C27310DF8F33D6BD6</bytea>
+            <bytea>02463ADFA20164C79415602AA6DEC2031E6CC3241F0760C720F9125ECD26012FBA</bytea>
         </array>
     </entry>
 </dict>

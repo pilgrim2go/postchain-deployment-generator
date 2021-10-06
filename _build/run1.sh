@@ -16,7 +16,7 @@ sed -i "s/__postchain_db_password__/$POSTGRES_PASSWORD/g" /usr/src/rell/config/c
 
 /opt/postchain-node/postchain.sh wipe-db -nc /usr/src/rell/config/node-config.properties
 /opt/postchain-node/postchain.sh add-blockchain -bc  /usr/src/rell/config/0.xml -cid 0 -nc /usr/src/rell/config/node-config.properties
-/opt/postchain-node/postchain.sh peerinfo-add -h node0 -nc /usr/src/rell/config/node-config.properties -p 9870 -pk 02A35356A347B693C3E973EC857C749C0001802DC9B85FF09C27310DF8F33D6BD6
-/opt/postchain-node/postchain.sh peerinfo-add -h node1 -nc /usr/src/rell/config/node-config.properties -p 9870 -pk 03C3459ED2DC54F6C66DF24A0192743137AF66AC77EC6D003D3B88CD2184E68BF5
+/opt/postchain-node/postchain.sh peerinfo-add -h node0 -nc /usr/src/rell/config/node-config.properties -p 9870 -pk 02463ADFA20164C79415602AA6DEC2031E6CC3241F0760C720F9125ECD26012FBA
+/opt/postchain-node/postchain.sh peerinfo-add -h node1 -nc /usr/src/rell/config/node-config.properties -p 9870 -pk 037E64CA1BDB0D22C93A4757B09449C5CB04441E69CEDBCD8F30FC7DD62625791B
 
 exec /opt/postchain-node/postchain.sh run-node -cid 0 -nc /usr/src/rell/config/node-config.properties

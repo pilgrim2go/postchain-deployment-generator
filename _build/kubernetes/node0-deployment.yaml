@@ -37,7 +37,7 @@ spec:
             configMapKeyRef:
               key: POSTGRES_PASSWORD
               name: postchain-env
-        image: chromia/postchain:d1test-generator-0
+        image: public.ecr.aws/j8l1p8n9/chromia/d1test:node-0
         imagePullPolicy: ""
         name: node0
         ports:
